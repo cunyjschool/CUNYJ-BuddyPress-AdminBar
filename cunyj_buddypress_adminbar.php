@@ -16,7 +16,9 @@ class cunyj_buddypress
 		
 		remove_action( 'bp_adminbar_logo', 'bp_adminbar_logo' );
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_login_menu', 2 );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_account_menu', 4 );		
+		remove_action( 'bp_adminbar_menus', 'bp_adminbar_account_menu', 4 );	
+		
+		remove_action( 'bp_adminbar_menus', 'bp_adminbar_authors_menu', 12 );	
 		
 		// Remove the random menu actions
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
@@ -24,6 +26,7 @@ class cunyj_buddypress
 		
 		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_activity'), 1 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_groups'), 7 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_authors_menu'), 12 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_profile'), 100 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_login_menu'), 100 );
 		
@@ -97,6 +100,38 @@ class cunyj_buddypress
 		
 	}
 	
+	function cunyj_adminbar_authors_menu() {
+		global $bp, $current_blog, $wpdb;
+
+		if ( $current_blog->blog_id == BP_ROOT_BLOG || !function_exists( 'bp_blogs_install' ) || !is_user_logged_in())
+			return false;
+
+		$blog_prefix = $wpdb->get_blog_prefix( $current_blog->id );
+		$authors = $wpdb->get_results( "SELECT user_id, user_login, user_nicename, display_name, user_email, meta_value as caps FROM $wpdb->users u, $wpdb->usermeta um WHERE u.ID = um.user_id AND meta_key = '{$blog_prefix}capabilities' ORDER BY um.user_id" );
+
+		if ( !empty( $authors ) ) {
+			/* This is a blog, render a menu with links to all authors */
+			echo '<li id="bp-adminbar-authors-menu"><a href="/">';
+			_e('Blog Authors', 'buddypress');
+			echo '</a>';
+
+			echo '<ul class="author-list">';
+			foreach( (array)$authors as $author ) {
+				$caps = maybe_unserialize( $author->caps );
+				if ( isset( $caps['subscriber'] ) || isset( $caps['contributor'] ) ) continue;
+
+				echo '<li>';
+				echo '<a href="' . bp_core_get_user_domain( $author->user_id, $author->user_nicename, $author->user_login ) . '">';
+				echo bp_core_fetch_avatar( array( 'item_id' => $author->user_id, 'email' => $author->user_email, 'width' => 15, 'height' => 15 ) ) ;
+	 			echo ' ' . $author->display_name . '</a>';
+				echo '<div class="admin-bar-clear"></div>';
+				echo '</li>';
+			}
+			echo '</ul>';
+			echo '</li>';
+		}
+	}
+	
 	function cunyj_adminbar_profile() {
 		global $bp;
 		
@@ -104,12 +139,14 @@ class cunyj_buddypress
 			return false;
 		}
 		
+		$current_user = wp_get_current_user();
+		
 		echo '<li class="align-right" id="bp-adminbar-account-menu"><a href="' . bp_loggedin_user_domain() . '">';
 		echo __( 'My Profile', 'buddypress' ) . '</a>';
 		echo '<ul>';
 		
 		echo '<li><a href="' . bp_loggedin_user_domain() . '">';
-		bp_displayed_user_fullname();
+		echo $current_user->display_name;
 		echo '</a></li>';
 		
 		/* Loop through each navigation item */
