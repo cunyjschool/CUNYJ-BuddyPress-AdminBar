@@ -48,7 +48,7 @@ class cunyj_buddypress
 		if ( is_user_logged_in() )
 			return false;
 
-		echo '<li class="bp-login no-arrow align-right"><a href="' . $bp->root_domain . '/wp-login.php?redirect_to=' . urlencode( $bp->root_domain ) . '">' . __( 'Log In', 'buddypress' ) . '</a></li>';
+		echo '<li class="bp-login no-arrow align-right"><a href="' . $bp->root_domain . '/wp-login.php?redirect_to=' . urlencode( 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] ) . '">' . __( 'Log In', 'buddypress' ) . '</a></li>';
 
 		// Show "Sign Up" link if user registrations are allowed
 		if ( bp_get_signup_allowed() ) {
