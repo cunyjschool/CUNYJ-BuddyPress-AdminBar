@@ -12,6 +12,15 @@ class cunyj_buddypress
 {
 	
 	function __construct() {
+		
+		// Initialize the plugin after everything has been loaded so that the nav elements
+		// are removed properly
+		add_action('init', array(&$this, 'init'));
+		
+	}
+	
+	function init() {
+		
 		global $wpdb;
 		
 		remove_action( 'bp_adminbar_logo', 'bp_adminbar_logo' );
@@ -24,16 +33,16 @@ class cunyj_buddypress
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
 		
 		
-		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_activity'), 1 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_groups'), 7 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_authors_menu'), 12 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_profile'), 100 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'cunyj_adminbar_login_menu'), 100 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'activity'), 1 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'groups'), 7 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'authors'), 12 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'profile'), 100 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'login_menu'), 100 );
 		
 	}
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
-	function cunyj_adminbar_login_menu() {
+	function login_menu() {
 		global $bp;
 
 		if ( is_user_logged_in() )
@@ -47,7 +56,7 @@ class cunyj_buddypress
 		}
 	}
 	
-	function cunyj_adminbar_activity() {
+	function activity() {
 		global $bp;
 		
 		if (!is_user_logged_in()) {
@@ -57,7 +66,7 @@ class cunyj_buddypress
 		
 	}
 	
-	function cunyj_adminbar_groups() {
+	function groups() {
 		global $bp;
 		
 		if (!is_user_logged_in()) {
@@ -100,7 +109,7 @@ class cunyj_buddypress
 		
 	}
 	
-	function cunyj_adminbar_authors_menu() {
+	function authors() {
 		global $bp, $current_blog, $wpdb;
 
 		if ( $current_blog->blog_id == BP_ROOT_BLOG || !function_exists( 'bp_blogs_install' ) || !is_user_logged_in())
@@ -132,7 +141,7 @@ class cunyj_buddypress
 		}
 	}
 	
-	function cunyj_adminbar_profile() {
+	function profile() {
 		global $bp;
 		
 		if ( !$bp->bp_nav || !is_user_logged_in() ) {
