@@ -28,9 +28,8 @@ class cunyj_buddypress
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_account_menu', 4 );	
 		
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_authors_menu', 12 );	
-		
-		// Remove the random menu actions
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
+		
 		
 		
 		add_action( 'bp_adminbar_menus', array(&$this, 'activity'), 1 );
@@ -38,6 +37,7 @@ class cunyj_buddypress
 		add_action( 'bp_adminbar_menus', array(&$this, 'authors'), 12 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'profile'), 100 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'login_menu'), 100 );
+		add_action( 'bp_adminbar_menus', array(&$this, 'alert_message'), 100);
 		
 	}
 	
@@ -63,6 +63,17 @@ class cunyj_buddypress
 			return false;
 		}
 		echo '<li id="bp-adminbar-activity" class="no-arrow"><a href="' . $bp->root_domain . '/activity/">Network Activity</a></li>';
+		
+	}
+	
+	function alert_message() {
+		global $bp, $wpdb;
+		
+		if (is_user_logged_in()) {
+			return false;
+		}
+		
+		echo '<li id="bp-adminbar-activity" class="no-arrow"><a href="http://wiki.journalism.cuny.edu/Getting%20a%20Fast%20Start">Getting a Fast Start: CLASS OF 2011</a></li>';
 		
 	}
 	
