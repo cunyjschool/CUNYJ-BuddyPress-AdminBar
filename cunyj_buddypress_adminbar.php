@@ -90,7 +90,7 @@ class cunyj_buddypress
 			
 			if ( bp_has_groups() ) :
 				
-				echo '<li id="bp-adminbar-groups-menu"><a href="' . $bp->loggedin_user->domain . $bp->groups->slug . '/my-groups">';
+				echo '<li id="bp-adminbar-groups-menu"><a href="' . bp_get_root_domain() . '/' . BP_GROUPS_SLUG .'/">';
 
 				_e ( 'Groups', 'buddypress');
 
