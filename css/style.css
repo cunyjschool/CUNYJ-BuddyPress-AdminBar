@@ -2,3 +2,18 @@
 	font-family: "Trebuchet MS", Arial, Verdana, sans-serif;
 	font-size: 14px;
 }
+
+#wp-admin-bar .padder .main-nav li#bp-member-name-avatar {
+	height: 50px;
+}
+
+#wp-admin-bar .padder .main-nav li#bp-member-name-avatar img {
+}
+
+#wp-admin-bar .padder .main-nav li#bp-member-name-avatar h4 {
+	font-size: 14px;
+	line-height: 18px;
+	font-weight: normal;
+	margin-top: 0;
+	margin-bottom: 0;
+}
