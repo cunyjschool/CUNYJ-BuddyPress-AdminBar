@@ -184,6 +184,10 @@ class cunyj_buddypress
 	function members() {
 		global $bp, $wpdb;
 		
+			if (!is_user_logged_in()) {
+				return false;
+			}
+		
 		echo '<li id="bp-adminbar-members-link" class="no-arrow"><a href="' . bp_get_root_domain() . '/' . BP_MEMBERS_SLUG .'">Members</a></li>';
 		
 	}
