@@ -239,7 +239,7 @@ class cunyj_buddypress
 		
 		echo '<li id="bp-member-name-avatar">';
 		echo '<a href="' . bp_loggedin_user_domain() . '">';		
-		echo '<img src="' . bp_loggedin_user_avatar( 'width=36&height=36' ) . '" />';
+		echo bp_loggedin_user_avatar( 'width=36&height=36' );
 		echo '<h4>' . $current_user->display_name . '</h4>';
 		echo '</a></li>';
 		
