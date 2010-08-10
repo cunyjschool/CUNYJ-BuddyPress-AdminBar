@@ -3,6 +3,10 @@
 	font-size: 14px;
 }
 
+#wp-admin-bar .padder .main-nav li a:hover {
+	text-decoration: none;
+}
+
 #wp-admin-bar .padder .main-nav li#bp-member-name-avatar {
 	height: 50px;
 }
