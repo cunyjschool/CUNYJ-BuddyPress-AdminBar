@@ -45,10 +45,14 @@ class cunyj_buddypress
 		add_action( 'bp_adminbar_menus', array(&$this, 'alert_message'), 100);
 		
 		$plugin_dir = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
+		
+		if ((int)get_site_option( 'hide-loggedout-adminbar' )) {
+			return true;
+		}
+		
 		wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css' );
 		
 	}
-	
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
 	function login_menu() {
