@@ -148,7 +148,7 @@ class cunyj_buddypress
 		
 		$groups = groups_get_user_groups( $bp->loggedin_user->id );
 		
-		if ( count( $groups ) ) {
+		if ( count( $groups['groups'] ) ) {
 			
 			echo '<li id="bp-adminbar-groups-menu"><a href="' . bp_get_root_domain() . '/' . BP_GROUPS_SLUG .'/">';
 
