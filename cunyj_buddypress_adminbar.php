@@ -140,45 +140,37 @@ class cunyj_buddypress
 	}
 	
 	function groups() {
-		global $bp;
+		global $bp, $groups_template;
 		
-		if (!is_user_logged_in()) {
+		if ( !is_user_logged_in() || !function_exists( 'groups_install' ) ) {
 			return false;
 		}
 		
-		if ( function_exists( 'groups_install' ) ) {
-			
-			//$groups = groups_get_groups_for_user( $bp->loggedin_user->id, true );
-			
-			if ( bp_has_groups() ) :
-				
-				echo '<li id="bp-adminbar-groups-menu"><a href="' . bp_get_root_domain() . '/' . BP_GROUPS_SLUG .'/">';
-
-				_e ( 'Groups', 'buddypress');
-
-				echo '</a><ul>';
-				
-				while ( bp_groups() ) : bp_the_group();
-				
-					echo '<li><a href="';
-					bp_group_permalink();
-					echo '">';
-					bp_group_name();
-					echo '</a></li>';
-				
-				endwhile;
+		$groups = groups_get_user_groups( $bp->loggedin_user->id );
 		
+		if ( count( $groups ) ) {
+			
+			echo '<li id="bp-adminbar-groups-menu"><a href="' . bp_get_root_domain() . '/' . BP_GROUPS_SLUG .'/">';
+
+			_e ( 'Groups', 'buddypress');
+
+			echo '</a><ul>';
+			
+			foreach ( $groups['groups'] as $group_id ) {
 				
-				echo '</ul></li>';
-				
-			else :
-				
-			endif;
-		
+				$group = groups_get_group( 'group_id=' . $group_id );
+			
+				echo '<li><a href="';
+				echo bp_get_root_domain() . '/' . BP_GROUPS_SLUG .'/' . $group->slug . '/';
+				echo '">';
+				echo $group->name;
+				echo '</a></li>';
+			
+			}
+	
+			echo '</ul></li>';
+			
 		}
-		
-		//$counter = 0;
-		//foreach( (array)$bp->bp_nav as $nav_item ) {
 		
 	}
 	
