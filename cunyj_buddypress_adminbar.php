@@ -1,12 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.1
+ * Version: 0.2
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
+
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', 0.2 );
 
 class cunyj_buddypress
 {
@@ -46,7 +48,7 @@ class cunyj_buddypress
 		
 		if (!(int)get_site_option( 'hide-loggedout-adminbar' ) || is_user_logged_in()) {
 			$plugin_dir = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
-			wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css' );
+			wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 		}
 		
 	}

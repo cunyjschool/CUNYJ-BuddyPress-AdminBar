@@ -1,6 +1,6 @@
 body {
 	padding-top: 25px !important;
-	background-position: 0px 25px;
+	background-position: 0px 25px !important;
 }
 
 #wp-admin-bar {
