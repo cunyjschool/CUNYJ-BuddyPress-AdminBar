@@ -70,7 +70,8 @@ body {
 }
 
 #wp-admin-bar .padder ul li.align-right {
-	padding-right: 22px;
+	padding-right: 17px;
+	background-position: 93% 53%;
 }
 
 #wp-admin-bar .padder ul li.align-right a img {
