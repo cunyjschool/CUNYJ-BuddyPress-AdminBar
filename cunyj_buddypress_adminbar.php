@@ -8,7 +8,7 @@
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', 0.3.1 );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.1" );
 
 class cunyj_buddypress
 {
