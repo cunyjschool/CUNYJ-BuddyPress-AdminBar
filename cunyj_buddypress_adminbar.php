@@ -36,6 +36,7 @@ class cunyj_buddypress
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
 		
 		// Our new glorious navigation bar
+		add_action( 'bp_adminbar_menus', array(&$this, 'logo'), 1 );		
 		add_action( 'bp_adminbar_menus', array(&$this, 'activity'), 1 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'blogs'), 6 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'groups'), 7 );
@@ -66,6 +67,13 @@ class cunyj_buddypress
 		if ( bp_get_signup_allowed() ) {
 			echo '<li class="bp-signup no-arrow"><a href="' . bp_get_signup_page(false) . '">' . __( 'Sign Up', 'buddypress' ) . '</a></li>';
 		}
+	}
+	
+	function logo() {
+		global $bp;
+	
+		echo '<li id="bp-adminbar-logo" class="no-arrow"><a href="' . $bp->root_domain . '/">CUNY J-School</a></li>';
+		
 	}
 	
 	function activity() {
@@ -229,7 +237,7 @@ class cunyj_buddypress
 		$current_user = wp_get_current_user();
 		
 		echo '<li class="align-right" id="bp-adminbar-account-menu"><a href="' . bp_loggedin_user_domain() . '">';
-		echo bp_loggedin_user_avatar( 'width=30&height=30' );
+		echo bp_loggedin_user_avatar( 'width=22&height=22' );
 		echo $current_user->display_name . '</a>';
 		echo '<ul>';
 		

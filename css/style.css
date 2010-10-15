@@ -1,37 +1,50 @@
 body {
-	padding-top: 32px !important;
-	background-position: 0px 32px !important;
+	padding-top: 30px !important;
+	background-position: 0px 30px !important;
 }
 
 #wp-admin-bar {
 	font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
 	font-size: 14px !important;
-	height: 32px !important;
+	height: 30px !important;
+	background-color: #666666;
 }
 
 #wp-admin-bar .padder {
-	height: 32px !important;
+	height: 30px !important;
+}
+
+#wp-admin-bar .padder .main-nav li#bp-adminbar-logo a {
+	color: #FF9900;
 }
 
 #wp-admin-bar .padder .main-nav li a {
 	font-size: 13px;
+	letter-spacing: 0.5px;
 	font-weight: lighter;
-	padding-top: 9px !important;
-	padding-bottom: 9px !important;
+	padding-top: 8px !important;
+	padding-bottom: 8px !important;
+	padding-left: 17px;
+	padding-right: 17px;
+	color: #CCCCCC;
 }
 
 #wp-admin-bar .padder .main-nav li {
-	border-right: solid 1px #8D8D8D;
+	border-right: solid 1px #3E3E3E;
 }
 
 #wp-admin-bar .padder .main-nav li li {
 	border-right: none;
 }
 
+#wp-admin-bar .padder .main-nav ul ul {
+	-moz-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 #wp-admin-bar .padder .main-nav li:hover a {
 	text-decoration: none;
-	padding-top: 9px;
-	padding-bottom: 9px !important;
+	padding-top: 8px;
+	padding-bottom: 8px !important;
 	color: #FFFFFF;
 }
 
@@ -57,5 +70,5 @@ body {
 }
 
 #wp-admin-bar .padder ul li.align-right a img {
-	margin-top: -8px;
+	margin-top: -3px;
 }
