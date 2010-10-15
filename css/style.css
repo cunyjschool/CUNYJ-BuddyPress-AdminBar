@@ -20,6 +20,7 @@ body {
 
 #wp-admin-bar .padder .main-nav li {
 	border-right: solid 1px #3E3E3E;
+	background-position: 88% 53%;	
 }
 
 #wp-admin-bar .padder .main-nav li a {
@@ -71,7 +72,8 @@ body {
 
 #wp-admin-bar .padder ul li.align-right {
 	padding-right: 17px;
-	background-position: 93% 53%;
+	border-left: solid 1px #3E3E3E;
+	background-position: 93% 53%;	
 }
 
 #wp-admin-bar .padder ul li.align-right a img {
