@@ -1,15 +1,37 @@
 body {
-	padding-top: 25px !important;
-	background-position: 0px 25px !important;
+	padding-top: 32px !important;
+	background-position: 0px 32px !important;
 }
 
 #wp-admin-bar {
-	font-family: "Trebuchet MS", Arial, Verdana, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
 	font-size: 14px;
 }
 
-#wp-admin-bar .padder .main-nav li a:hover {
+#wp-admin-bar .padder {
+	height: 32px;
+}
+
+#wp-admin-bar .padder .main-nav li a {
+	font-size: 13px;
+	font-weight: lighter;
+	padding-top: 9px;
+	padding-bottom: 9px;
+}
+
+#wp-admin-bar .padder .main-nav li {
+	border-right: solid 1px #8D8D8D;
+}
+
+#wp-admin-bar .padder .main-nav li li {
+	border-right: none;
+}
+
+#wp-admin-bar .padder .main-nav li:hover a {
 	text-decoration: none;
+	padding-top: 9px;
+	padding-bottom: 9px !important;
+	color: #FFFFFF;
 }
 
 #wp-admin-bar .padder .main-nav li#bp-member-name-avatar {
@@ -27,4 +49,12 @@ body {
 	margin-bottom: 0;
 	padding: 0;
 	display: inline;
+}
+
+#wp-admin-bar .padder ul li.align-right {
+	padding-right: 22px;
+}
+
+#wp-admin-bar .padder ul li.align-right a img {
+	margin-top: -8px;
 }

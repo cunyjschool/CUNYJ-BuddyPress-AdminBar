@@ -74,7 +74,7 @@ class cunyj_buddypress
 		if (!is_user_logged_in()) {
 			return false;
 		}
-		echo '<li id="bp-adminbar-activity" class="no-arrow"><a href="' . $bp->root_domain . '/activity/">Network Activity</a></li>';
+		echo '<li id="bp-adminbar-activity" class="no-arrow"><a href="' . $bp->root_domain . '/activity/">Activity</a></li>';
 		
 	}
 	
@@ -229,23 +229,18 @@ class cunyj_buddypress
 		$current_user = wp_get_current_user();
 		
 		echo '<li class="align-right" id="bp-adminbar-account-menu"><a href="' . bp_loggedin_user_domain() . '">';
-		echo __( 'My Profile', 'buddypress' ) . '</a>';
+		echo bp_loggedin_user_avatar( 'width=30&height=30' );
+		echo $current_user->display_name . '</a>';
 		echo '<ul>';
-		
-		echo '<li id="bp-member-name-avatar">';
-		echo '<a href="' . bp_loggedin_user_domain() . '">';		
-		echo bp_loggedin_user_avatar( 'width=36&height=36' );
-		echo '<h4>' . $current_user->display_name . '</h4>';
-		echo '</a></li>';
 		
 		/* Loop through each navigation item */
 		$counter = 0;
 		foreach( (array)$bp->bp_nav as $nav_item ) {
 			$alt = ( 0 == $counter % 2 ) ? ' class="alt"' : '';
 			
-			$ignore = (array('Activity', 'Profile'));
+			$ignore = array('activity', 'groups', 'friends', 'blogs');
 			
-			if (in_array($nav_item['name'], $ignore)) {
+			if (in_array($nav_item['slug'], $ignore)) {
 				continue;
 			}
 
