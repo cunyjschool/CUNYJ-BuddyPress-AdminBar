@@ -5,18 +5,19 @@ body {
 
 #wp-admin-bar {
 	font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-	font-size: 14px;
+	font-size: 14px !important;
+	height: 32px !important;
 }
 
 #wp-admin-bar .padder {
-	height: 32px;
+	height: 32px !important;
 }
 
 #wp-admin-bar .padder .main-nav li a {
 	font-size: 13px;
 	font-weight: lighter;
-	padding-top: 9px;
-	padding-bottom: 9px;
+	padding-top: 9px !important;
+	padding-bottom: 9px !important;
 }
 
 #wp-admin-bar .padder .main-nav li {
