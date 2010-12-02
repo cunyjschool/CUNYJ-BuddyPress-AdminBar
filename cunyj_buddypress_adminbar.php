@@ -25,6 +25,8 @@ class cunyj_buddypress
 		
 		global $wpdb;
 		
+		$plugin_dir = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
+		
 		// All of the actions to unset
 		remove_action( 'bp_adminbar_logo', 'bp_adminbar_logo' );
 		remove_action( 'bp_adminbar_menus', 'bp_adminbar_login_menu', 2 );
@@ -47,13 +49,13 @@ class cunyj_buddypress
 		add_action( 'bp_adminbar_menus', array(&$this, 'login_menu'), 100 );
 		add_action( 'bp_adminbar_menus', array(&$this, 'alert_message'), 100);
 		
-		if (!(int)get_site_option( 'hide-loggedout-adminbar' ) || is_user_logged_in()) {
-			$plugin_dir = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
-			wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
-		}
 		
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'cunyj-buddypress-adminbar', $plugin_dir . 'js/cunyj_buddypress_adminbar.js', array( 'jquery' ), CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION, true );
+		wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
+		
+		if ( !is_admin() ) {
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'cunyj-buddypress-adminbar', $plugin_dir . 'js/cunyj_buddypress_adminbar.js', array( 'jquery' ), CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION, true );
+		}
 		
 	}
 	
