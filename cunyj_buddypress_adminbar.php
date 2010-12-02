@@ -52,6 +52,9 @@ class cunyj_buddypress
 			wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 		}
 		
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'cunyj-buddypress-adminbar', $plugin_dir . 'js/cunyj_buddypress_adminbar.js', array( 'jquery' ), CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION, true );
+		
 	}
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
