@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.3.3
+ * Version: 0.3.4
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.3" );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.4" );
 
 class cunyj_buddypress
 {
@@ -251,7 +251,7 @@ class cunyj_buddypress
 		foreach( (array)$bp->bp_nav as $nav_item ) {
 			$alt = ( 0 == $counter % 2 ) ? ' class="alt"' : '';
 			
-			$ignore = array('activity', 'groups', 'friends', 'blogs');
+			$ignore = array( 'activity', 'groups', 'friends', 'blogs', 'settings' );
 			
 			if (in_array($nav_item['slug'], $ignore)) {
 				continue;
