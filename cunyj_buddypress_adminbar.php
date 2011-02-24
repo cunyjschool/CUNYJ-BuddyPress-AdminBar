@@ -251,7 +251,7 @@ class cunyj_buddypress
 		foreach( (array)$bp->bp_nav as $nav_item ) {
 			$alt = ( 0 == $counter % 2 ) ? ' class="alt"' : '';
 			
-			$ignore = array('activity', 'groups', 'friends', 'blogs');
+			$ignore = array( 'activity', 'groups', 'friends', 'blogs', 'settings' );
 			
 			if (in_array($nav_item['slug'], $ignore)) {
 				continue;
