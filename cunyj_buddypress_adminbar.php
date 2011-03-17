@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.3.4
+ * Version: 0.3.5
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.4" );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.5" );
 
 class cunyj_buddypress
 {
@@ -27,37 +27,80 @@ class cunyj_buddypress
 		
 		$plugin_dir = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 		
-		// All of the actions to unset
-		remove_action( 'bp_adminbar_logo', 'bp_adminbar_logo' );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_login_menu', 2 );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_account_menu', 4 );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_blogs_menu', 6 );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_notifications_menu', 8 );		
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_authors_menu', 12 );	
-		remove_action( 'bp_adminbar_menus', 'groups_setup_adminbar_menu', 20 );
-		remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
+		// Only do all of these actions if the BuddyPress adminbar is enabled
+		if ( !BP_DISABLE_ADMIN_BAR ) {
+			// All of the actions to unset
+			remove_action( 'bp_adminbar_logo', 'bp_adminbar_logo' );
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_login_menu', 2 );
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_account_menu', 4 );
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_blogs_menu', 6 );
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_notifications_menu', 8 );		
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_authors_menu', 12 );	
+			remove_action( 'bp_adminbar_menus', 'groups_setup_adminbar_menu', 20 );
+			remove_action( 'bp_adminbar_menus', 'bp_adminbar_random_menu', 100 );
 		
-		// Our new glorious navigation bar
-		add_action( 'bp_adminbar_menus', array(&$this, 'logo'), 1 );		
-		add_action( 'bp_adminbar_menus', array(&$this, 'activity'), 1 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'blogs'), 6 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'groups'), 7 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'members'), 8 );
-		add_action( 'bp_adminbar_menus', 'bp_adminbar_notifications_menu', 15 );
-		//add_action( 'bp_adminbar_menus', array(&$this, 'authors'), 12 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'profile'), 100 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'login_menu'), 100 );
-		add_action( 'bp_adminbar_menus', array(&$this, 'alert_message'), 100);
+			// Our new glorious navigation bar
+			add_action( 'bp_adminbar_menus', array(&$this, 'logo'), 1 );		
+			add_action( 'bp_adminbar_menus', array(&$this, 'activity'), 1 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'blogs'), 6 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'groups'), 7 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'members'), 8 );
+			add_action( 'bp_adminbar_menus', 'bp_adminbar_notifications_menu', 15 );
+			//add_action( 'bp_adminbar_menus', array(&$this, 'authors'), 12 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'profile'), 100 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'login_menu'), 100 );
+			add_action( 'bp_adminbar_menus', array(&$this, 'alert_message'), 100);
 		
 		
-		wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
+			wp_enqueue_style( 'cunyj-buddypress-adminbar', $plugin_dir . 'css/style.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 		
-		if ( !is_admin() ) {
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'cunyj-buddypress-adminbar', $plugin_dir . 'js/cunyj_buddypress_adminbar.js', array( 'jquery' ), CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION, true );
+			if ( !is_admin() ) {
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'cunyj-buddypress-adminbar', $plugin_dir . 'js/cunyj_buddypress_adminbar.js', array( 'jquery' ), CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION, true );
+			}
+		} // END if ( !BP_DISABLE_ADMIN_BAR ) {
+		
+		// If the new WordPress 3.1 admin bar is showing
+		if ( is_admin_bar_showing() ) {
+			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
+			
+			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ) );
 		}
 		
 	}
+	
+	/**
+	 * wp_admin_bar_links()
+	 * Add additional links to the admin bar
+	 */
+	function wp_admin_bar_links() {
+		global $wp_admin_bar, $bp;
+		
+		$args = array(
+			'title' => 'CUNY J-School',
+			'href' => $bp->root_domain,
+			'id' => 'cunyj_links',
+		);
+		$wp_admin_bar->add_menu( $args );
+		
+		$links = array(
+			'Recent Activity' => $bp->root_domain . '/activity/',
+			'Members' => $bp->root_domain . '/members/',
+			'Events Calendar' => $bp->root_domain . '/events/',
+			'Wiki' => 'http://wiki.journalism.cuny.edu/',
+			'Email' => 'http://mail.journalism.cuny.edu/',
+			'Help' => 'http://tech.journalism.cuny.edu/',
+		);
+		
+		foreach ( $links as $label => $url ) {
+			$args = array(
+				'title' => $label,
+				'href' => $url,
+				'parent' => 'cunyj_links',
+			);
+			$wp_admin_bar->add_menu( $args );
+		}
+	} // END wp_admin_bar_links()
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
 	function login_menu() {
