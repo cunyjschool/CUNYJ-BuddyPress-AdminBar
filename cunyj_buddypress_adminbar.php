@@ -84,9 +84,12 @@ class cunyj_buddypress
 		$wp_admin_bar->add_menu( $args );
 		
 		$links = array(
-			'Activity' => $bp->root_domain . '/activity/',
-			'Members' => $bp->root_domain . '/members/',			
-			'Groups' => $bp->root_domain . '/groups/',
+			'Recent Activity' => $bp->root_domain . '/activity/',
+			'Members' => $bp->root_domain . '/members/',
+			'Events Calendar' => $bp->root_domain . '/events/',
+			'Wiki' => 'http://wiki.journalism.cuny.edu/',
+			'Email' => 'http://mail.journalism.cuny.edu/',
+			'Help' => 'http://tech.journalism.cuny.edu/',
 		);
 		
 		foreach ( $links as $label => $url ) {

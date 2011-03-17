@@ -10,6 +10,6 @@ body {
 	color: #555555;
 }
 
-#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links ul li.hover a {
+#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links ul li:hover a {
 	color: #FFFFFF;
 }
