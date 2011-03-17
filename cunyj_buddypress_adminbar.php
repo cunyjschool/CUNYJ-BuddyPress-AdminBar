@@ -60,7 +60,44 @@ class cunyj_buddypress
 			}
 		} // END if ( !BP_DISABLE_ADMIN_BAR ) {
 		
+		// If the new WordPress 3.1 admin bar is showing
+		if ( is_admin_bar_showing() ) {
+			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
+			
+			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ) );
+		}
+		
 	}
+	
+	/**
+	 * wp_admin_bar_links()
+	 * Add additional links to the admin bar
+	 */
+	function wp_admin_bar_links() {
+		global $wp_admin_bar, $bp;
+		
+		$args = array(
+			'title' => 'CUNY J-School',
+			'href' => $bp->root_domain,
+			'id' => 'cunyj_links',
+		);
+		$wp_admin_bar->add_menu( $args );
+		
+		$links = array(
+			'Activity' => $bp->root_domain . '/activity/',
+			'Members' => $bp->root_domain . '/members/',			
+			'Groups' => $bp->root_domain . '/groups/',
+		);
+		
+		foreach ( $links as $label => $url ) {
+			$args = array(
+				'title' => $label,
+				'href' => $url,
+				'parent' => 'cunyj_links',
+			);
+			$wp_admin_bar->add_menu( $args );
+		}
+	} // END wp_admin_bar_links()
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
 	function login_menu() {
