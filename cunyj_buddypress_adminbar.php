@@ -64,7 +64,10 @@ class cunyj_buddypress
 		if ( is_admin_bar_showing() ) {
 			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 			
-			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ) );
+			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ), 15 );
+			
+			// Remove the updates nag because it's not that useful to anyone
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_updates_menu', 70 );
 		}
 		
 	}
