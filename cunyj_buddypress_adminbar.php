@@ -100,6 +100,26 @@ class cunyj_buddypress
 			);
 			$wp_admin_bar->add_menu( $args );
 		}
+		
+		// Add a "Network Admin" link to the super admin's bar
+		if ( is_super_admin() ) {
+			
+			$user_id = get_current_user_id();
+			if ( 0 != $user_id ) {
+				
+				$avatar = get_avatar( get_current_user_id(), 16 );
+				$id = ( ! empty( $avatar ) ) ? 'my-account-with-avatar' : 'my-account';
+				
+				$wp_admin_bar->remove_menu( 'dashboard' );
+				$wp_admin_bar->remove_menu( 'log-out' );
+				
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Dashboard' ), 'href' => get_dashboard_url( $user_id ) ) );
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );				
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );
+			}	
+
+		}
+		
 	} // END wp_admin_bar_links()
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
