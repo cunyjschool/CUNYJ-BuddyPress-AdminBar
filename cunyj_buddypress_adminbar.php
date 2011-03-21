@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.3.6
+ * Version: 0.3.7
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.6" );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.7" );
 
 class cunyj_buddypress
 {
@@ -64,7 +64,10 @@ class cunyj_buddypress
 		if ( is_admin_bar_showing() ) {
 			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 			
-			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ) );
+			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ), 15 );
+			
+			// Remove the updates nag because it's not that useful to anyone
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_updates_menu', 70 );
 		}
 		
 	}
@@ -100,6 +103,26 @@ class cunyj_buddypress
 			);
 			$wp_admin_bar->add_menu( $args );
 		}
+		
+		// Add a "Network Admin" link to the super admin's bar
+		if ( is_super_admin() ) {
+			
+			$user_id = get_current_user_id();
+			if ( 0 != $user_id ) {
+				
+				$avatar = get_avatar( get_current_user_id(), 16 );
+				$id = ( ! empty( $avatar ) ) ? 'my-account-with-avatar' : 'my-account';
+				
+				$wp_admin_bar->remove_menu( 'dashboard' );
+				$wp_admin_bar->remove_menu( 'log-out' );
+				
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Dashboard' ), 'href' => get_dashboard_url( $user_id ) ) );
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );				
+				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );
+			}	
+
+		}
+		
 	} // END wp_admin_bar_links()
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
