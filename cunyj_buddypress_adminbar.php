@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.3.7
+ * Version: 0.3.8
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.7" );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.8" );
 
 class cunyj_buddypress
 {
@@ -64,19 +64,21 @@ class cunyj_buddypress
 		if ( is_admin_bar_showing() ) {
 			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 			
-			add_action( 'admin_bar_menu', array( &$this, 'wp_admin_bar_links' ), 15 );
+			add_action( 'admin_bar_menu', array( &$this, 'cunyj_dropdown_links' ), 15 );
 			
 			// Remove the updates nag because it's not that useful to anyone
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_updates_menu', 70 );
-		}
+			
+			add_action( 'admin_bar_menu', array( &$this, 'modify_admin_bar_links' ), 150 );
+		} // END is_admin_bar_showing()
 		
 	}
 	
 	/**
-	 * wp_admin_bar_links()
+	 * cunyj_dropdown_links()
 	 * Add additional links to the admin bar
 	 */
-	function wp_admin_bar_links() {
+	function cunyj_dropdown_links() {
 		global $wp_admin_bar, $bp;
 		
 		$args = array(
@@ -104,6 +106,24 @@ class cunyj_buddypress
 			$wp_admin_bar->add_menu( $args );
 		}
 		
+	} // END cunyj_dropdown_links()
+	
+	/**
+	 * modify_admin_bar_links()
+	 */
+	function modify_admin_bar_links() {
+		global $wp_admin_bar;
+		
+		// Add a "Edit CSS" link to the appearance dropdown if user can edit
+		if ( current_user_can( 'switch_themes' ) ) {
+			$args = array(
+				'title' => 'Edit CSS',
+				'href' => admin_url( 'themes.php?page=editcss' ),
+				'parent' => 'appearance',
+			);
+			$wp_admin_bar->add_menu( $args );
+		}
+		
 		// Add a "Network Admin" link to the super admin's bar
 		if ( is_super_admin() ) {
 			
@@ -123,7 +143,7 @@ class cunyj_buddypress
 
 		}
 		
-	} // END wp_admin_bar_links()
+	} // END modify_admin_bar_links()
 	
 	// **** "Log In" and "Sign Up" links (Visible when not logged in) ********
 	function login_menu() {
