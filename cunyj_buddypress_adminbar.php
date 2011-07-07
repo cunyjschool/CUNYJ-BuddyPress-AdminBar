@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: CUNYJ BuddyPress Admin Bar
- * Version: 0.3.8
+ * Version: 0.3.9
  * Plugin URI: http://journalism.cuny.edu
  * Description: Customized Admin Bar up in the heezy
  * Author: Daniel Bachhuber
  * Author URI: http://www.danielbachhuber.com/
  */
 
-define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.8" );
+define( 'CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION', "0.3.9" );
 
 class cunyj_buddypress
 {
@@ -64,14 +64,57 @@ class cunyj_buddypress
 		if ( is_admin_bar_showing() ) {
 			wp_enqueue_style( 'cunyj-wordpress-adminbar', $plugin_dir . 'css/wp-adminbar.css', null,  CUNYJ_BUDDYPRESS_ADMIN_BAR_VERSION );
 			
+			add_action( 'admin_bar_menu', array( &$this, 'modify_account_admin_bar_option' ), 10 );
 			add_action( 'admin_bar_menu', array( &$this, 'cunyj_dropdown_links' ), 15 );
+			add_action( 'admin_bar_menu', array( &$this, 'modify_admin_bar_links' ), 150 );		
 			
 			// Remove the updates nag because it's not that useful to anyone
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_updates_menu', 70 );
-			
-			add_action( 'admin_bar_menu', array( &$this, 'modify_admin_bar_links' ), 150 );
+		
 		} // END is_admin_bar_showing()
 		
+	}
+	
+	/**
+	 * Reorganize the dropdown items on the account navigation
+	 */
+	function modify_account_admin_bar_option() {
+		global $wp_admin_bar, $user_identity;
+		
+		// Customize the user account dropdown
+		$user_id = get_current_user_id();
+		if ( 0 != $user_id ) {
+			
+			$avatar = get_avatar( get_current_user_id(), 16 );
+			$id = ( ! empty( $avatar ) ) ? 'my-account-with-avatar' : 'my-account';				
+			
+			$wp_admin_bar->remove_menu( $id );		
+			$wp_admin_bar->remove_menu( 'edit-profile' );
+			
+			// Link the user's name to their BuddyPress profile if it exists
+			if ( function_exists( 'bp_core_get_user_domain' ) ) {
+				$wp_admin_bar->add_menu( array( 'id' => $id, 'title' => $avatar . $user_identity,  'href' => bp_core_get_user_domain( $user_id ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'view-profile', 'parent' => $id, 'title' => __( 'View My Profile' ),  'href' => bp_core_get_user_domain( $user_id ) ) );
+			} else {
+				$wp_admin_bar->add_menu( array( 'id' => $id, 'title' => $avatar . $user_identity,  'href' => get_edit_profile_url( $user_id ) ) );
+			}
+			
+			$wp_admin_bar->add_menu( array( 'id' => 'edit-profile', 'parent' => $id, 'title' => __( 'Edit My Settings' ), 'href' => get_edit_profile_url( $user_id ) ) );
+		
+			// Add a "Network Admin" link to the super admin's bar and relevant sub options
+			if ( is_super_admin() ) {
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin', 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );
+				
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-sites', 'parent' => 'network-admin', 'title' => __( 'Sites' ), 'href' => network_admin_url( 'sites.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-users', 'parent' => 'network-admin', 'title' => __( 'Users' ), 'href' => network_admin_url( 'users.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-themes', 'parent' => 'network-admin', 'title' => __( 'Themes' ), 'href' => network_admin_url( 'themes.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-settings', 'parent' => 'network-admin', 'title' => __( 'Settings' ), 'href' => network_admin_url( 'settings.php' ) ) );
+				
+			}
+			
+			$wp_admin_bar->add_menu( array( 'id' => 'log-out', 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );			
+
+		}		
 	}
 	
 	/**
@@ -122,26 +165,7 @@ class cunyj_buddypress
 				'parent' => 'appearance',
 			);
 			$wp_admin_bar->add_menu( $args );
-		}
-		
-		// Add a "Network Admin" link to the super admin's bar
-		if ( is_super_admin() ) {
-			
-			$user_id = get_current_user_id();
-			if ( 0 != $user_id ) {
-				
-				$avatar = get_avatar( get_current_user_id(), 16 );
-				$id = ( ! empty( $avatar ) ) ? 'my-account-with-avatar' : 'my-account';
-				
-				$wp_admin_bar->remove_menu( 'dashboard' );
-				$wp_admin_bar->remove_menu( 'log-out' );
-				
-				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Dashboard' ), 'href' => get_dashboard_url( $user_id ) ) );
-				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );				
-				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );
-			}	
-
-		}
+		}		
 		
 	} // END modify_admin_bar_links()
 	
