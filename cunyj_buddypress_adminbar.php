@@ -101,12 +101,18 @@ class cunyj_buddypress
 			
 			$wp_admin_bar->add_menu( array( 'id' => 'edit-profile', 'parent' => $id, 'title' => __( 'Edit My Settings' ), 'href' => get_edit_profile_url( $user_id ) ) );
 		
-			// Add a "Network Admin" link to the super admin's bar
+			// Add a "Network Admin" link to the super admin's bar and relevant sub options
 			if ( is_super_admin() ) {
-				$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );				
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin', 'parent' => $id, 'title' => __( 'Network Admin' ), 'href' => network_admin_url() ) );
+				
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-sites', 'parent' => 'network-admin', 'title' => __( 'Sites' ), 'href' => network_admin_url( 'sites.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-users', 'parent' => 'network-admin', 'title' => __( 'Users' ), 'href' => network_admin_url( 'users.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-themes', 'parent' => 'network-admin', 'title' => __( 'Themes' ), 'href' => network_admin_url( 'themes.php' ) ) );
+				$wp_admin_bar->add_menu( array( 'id' => 'network-admin-settings', 'parent' => 'network-admin', 'title' => __( 'Settings' ), 'href' => network_admin_url( 'settings.php' ) ) );
+				
 			}
 			
-			$wp_admin_bar->add_menu( array( 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );			
+			$wp_admin_bar->add_menu( array( 'id' => 'log-out', 'parent' => $id, 'title' => __( 'Log Out' ), 'href' => wp_logout_url() ) );			
 
 		}		
 	}
