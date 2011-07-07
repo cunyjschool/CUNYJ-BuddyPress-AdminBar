@@ -2,11 +2,13 @@ body {
 	padding-top: 0px;
 }
 
-#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links a {
+#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links a,
+#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links a span {
 	color: #FF9900;
 }
 
-#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links ul li a {
+#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links ul li a,
+#wpadminbar .quicklinks ul li#wp-admin-bar-cunyj_links ul li a span {
 	color: #555555;
 }
 
